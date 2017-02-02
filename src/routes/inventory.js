@@ -15,7 +15,7 @@ export function deleteItem(req, res) {
 		if (err) {
 			res.sendStatus(500);
 		} else {
-			res.sendStatus(200);
+			getInventory(req, res);
 		}
 	});
 }
@@ -33,14 +33,14 @@ export function createItem(req, res) {
 		if (err) {
 			res.sendStatus(500);
 		} else {
-			res.sendStatus(200);
+			getInventory(req, res);
 		}
 	});
 }
 
 export function modifyItem(req, res) {
-	Item.findByIdAndUpdate(req.params.itemId, { $set: req.body }, { new: true }, (err, tank) => {
+	Item.findByIdAndUpdate(req.params.itemId, { $set: req.body }, { new: true }, (err, doc) => {
 		if (err) res.send(err);
-		res.send(tank);
+		res.send(doc);
 	});
 }
