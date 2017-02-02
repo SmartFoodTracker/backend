@@ -14,7 +14,11 @@ export function parseSpeech(req, res) {
 			encoding: 'LINEAR16',
 			sampleRate: 16000
 		}, (err, transcript) => {
-			res.send(transcript);
+			if (err) {
+				res.send(err);
+			} else {
+				res.send(transcript);
+			}
 		});
 	});
 }
