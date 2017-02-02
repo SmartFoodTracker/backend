@@ -5,7 +5,7 @@ export function getInventory(req, res) {
 		if (!err) {
 			res.send(documents);
 		} else {
-			res.send('error');
+			res.sendStatus(500);
 		}
 	});
 }
@@ -13,9 +13,9 @@ export function getInventory(req, res) {
 export function deleteItem(req, res) {
 	Item.findByIdAndRemove(req.params.itemId, (err, doc) => {
 		if (err) {
-			res.send(err);
+			res.sendStatus(500);
 		} else {
-			res.send('successfully removed item');
+			res.sendStatus(200);
 		}
 	});
 }
@@ -31,9 +31,9 @@ export function createItem(req, res) {
 
 	item.save((err) => {
 		if (err) {
-			res.send(err);
+			res.sendStatus(500);
 		} else {
-			res.send('successfully added to database');
+			res.sendStatus(200);
 		}
 	});
 }
