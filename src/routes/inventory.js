@@ -47,3 +47,13 @@ export function modifyItem(req, res) {
 		}
 	});
 }
+
+export function getItem(req, res) {
+	Item.findById(req.params.itemId, (err, doc) => {
+		if (err) {
+			res.sendStatus(500);
+		} else {
+			res.send(doc);
+		}
+	});
+}

@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import { getInventory, deleteItem, createItem, modifyItem } from './routes/inventory';
+import { getInventory, deleteItem, createItem, modifyItem, getItem } from './routes/inventory';
 import { parseSpeech } from './routes/speech';
 import { parseBarcode } from './routes/barcode';
 
@@ -14,6 +14,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.get('/:deviceId/inventory', getInventory);
 app.put('/:deviceId/inventory', createItem);
 app.put('/:deviceId/inventory/:itemId', modifyItem);
+app.get('/:deviceId/inventory/:itemId', getItem);
 app.delete('/:deviceId/inventory/:itemId', deleteItem);
 
 app.post('/speech', bodyParser.raw({ type: 'audio/wav', limit: '50mb' }), parseSpeech);
