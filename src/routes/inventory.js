@@ -40,7 +40,10 @@ export function createItem(req, res) {
 
 export function modifyItem(req, res) {
 	Item.findByIdAndUpdate(req.params.itemId, { $set: req.body }, { new: true }, (err, doc) => {
-		if (err) res.send(err);
-		res.send(doc);
+		if (err) {
+			res.sendStatus(500);
+		} else {
+			getInventory(req, res);
+		}
 	});
 }
