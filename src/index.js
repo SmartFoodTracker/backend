@@ -4,10 +4,11 @@ import mongoose from 'mongoose';
 import { getInventory, deleteItem, createItem, modifyItem, getItem } from './routes/inventory';
 import { parseSpeech } from './routes/speech';
 import { parseBarcode } from './routes/barcode';
-
-mongoose.connect(process.env.MONGODB_URI);
+import config from './config/index.js';
 
 let app = express();
+
+mongoose.connect(config[process.env.NODE_ENV].mongo);
 
 app.use(bodyParser.json({ limit: '50mb' }));
 
@@ -28,3 +29,5 @@ app.listen(port, (err) => {
 		console.log('node server started on port:', port);
 	}
 });
+
+export default app;
