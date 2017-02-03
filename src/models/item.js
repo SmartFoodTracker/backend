@@ -5,8 +5,8 @@ let itemSchema = new mongoose.Schema({
 	id: String,
 	quantity: Number,
 	units: String,
-	dateAdded: Date,
-	expiryDate: Date
+	timeAdded: Number,
+	expiryTime: Number
 });
 
 let Item = mongoose.model('Items', itemSchema);
