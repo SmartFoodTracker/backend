@@ -23,8 +23,8 @@ export function deleteItem(req, res) {
 export function createItem(req, res) {
 	let item = new Item({
 		title: req.body.title,
-		quantity: req.body.quantity || 1,
-		units: req.body.units || 'whole',
+		quantity: req.body.quantity,
+		units: req.body.units,
 		timeAdded: new Date().getTime(),
 		timeExpired: req.body.timeExpired
 	});
