@@ -2,10 +2,10 @@ import Item from '../models/item';
 
 export function getInventory(req, res) {
 	Item.find({}, (err, documents) => {
-		if (!err) {
-			res.send(documents);
+		if (err) {
+			res.sendStatus(400);
 		} else {
-			res.sendStatus(500);
+			res.send(documents);
 		}
 	});
 }
@@ -13,7 +13,7 @@ export function getInventory(req, res) {
 export function deleteItem(req, res) {
 	Item.findByIdAndRemove(req.params.itemId, (err, doc) => {
 		if (err) {
-			res.sendStatus(500);
+			res.sendStatus(400);
 		} else {
 			getInventory(req, res);
 		}
@@ -31,7 +31,7 @@ export function createItem(req, res) {
 
 	item.save((err) => {
 		if (err) {
-			res.sendStatus(500);
+			res.sendStatus(400);
 		} else {
 			getInventory(req, res);
 		}
@@ -41,7 +41,7 @@ export function createItem(req, res) {
 export function modifyItem(req, res) {
 	Item.findByIdAndUpdate(req.params.itemId, { $set: req.body }, { runValidators: true }, (err, doc) => {
 		if (err) {
-			res.sendStatus(500);
+			res.sendStatus(400);
 		} else {
 			getInventory(req, res);
 		}
@@ -51,7 +51,7 @@ export function modifyItem(req, res) {
 export function getItem(req, res) {
 	Item.findById(req.params.itemId, (err, doc) => {
 		if (err) {
-			res.sendStatus(500);
+			res.sendStatus(400);
 		} else {
 			res.send(doc);
 		}
