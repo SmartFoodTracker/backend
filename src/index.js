@@ -21,6 +21,16 @@ app.delete('/:deviceId/inventory/:itemId', deleteItem);
 app.post('/speech', bodyParser.raw({ type: 'audio/wav', limit: '50mb' }), parseSpeech);
 app.get('/barcode/:code', parseBarcode);
 
+app.use((req, res, next) => {
+	res.status(404);
+	res.send('404 - invalid route');
+});
+
+app.use((err, req, res, next) => {
+	res.status(500);
+	res.send('500 - server error');
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, (err) => {
 	if (err) {
