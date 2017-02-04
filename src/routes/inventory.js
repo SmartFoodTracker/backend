@@ -39,7 +39,7 @@ export function createItem(req, res) {
 }
 
 export function modifyItem(req, res) {
-	Item.findByIdAndUpdate(req.params.itemId, { $set: req.body }, (err, doc) => {
+	Item.findByIdAndUpdate(req.params.itemId, { $set: req.body }, { runValidators: true }, (err, doc) => {
 		if (err) {
 			res.sendStatus(500);
 		} else {
