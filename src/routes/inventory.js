@@ -24,9 +24,9 @@ export function createItem(req, res) {
 	let item = new Item({
 		title: req.body.title,
 		quantity: req.body.quantity || 1,
-		units: req.body.units || '',
-		timeAdded: req.body.timeAdded || new Date().getTime(),
-		timeExpired: req.body.timeExpired || null
+		units: req.body.units || 'whole',
+		timeAdded: new Date().getTime(),
+		timeExpired: req.body.timeExpired
 	});
 
 	item.save((err) => {
@@ -39,7 +39,7 @@ export function createItem(req, res) {
 }
 
 export function modifyItem(req, res) {
-	Item.findByIdAndUpdate(req.params.itemId, { $set: req.body }, { new: true }, (err, doc) => {
+	Item.findByIdAndUpdate(req.params.itemId, { $set: req.body }, (err, doc) => {
 		if (err) {
 			res.sendStatus(500);
 		} else {

@@ -23,6 +23,16 @@ const checks = [
 		name: errorType('quantity')
 	},
 	{
+		key: 'units',
+		value: 'A lot',
+		name: errorType('units')
+	},
+	{
+		key: 'units',
+		value: undefined,
+		name: errorMissing('units')
+	},
+	{
 		key: 'timeAdded',
 		value: undefined,
 		name: errorMissing('timeAdded')
@@ -42,11 +52,11 @@ const checks = [
 function replace(check) {
 	return (done) => {
 		let item = new Item({
-			title: undefined,
+			title: 'banana',
 			quantity: 1,
 			units: 'l',
 			timeAdded: new Date().getTime(),
-			timeExpired: null
+			timeExpired: undefined
 		});
 
 		item[check.key] = check.value; 
