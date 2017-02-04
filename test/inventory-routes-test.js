@@ -15,7 +15,7 @@ after((done) => {
 describe('test inventory api endpoints', () => {
 	it('should save an item', (done) => {
 		request(app).put('/someId/inventory')
-		.send({title: 'banana', quantity: 5, units: 'whole', dateAdded: new Date(), expiryDate: null})
+		.send({title: 'banana', quantity: 5, units: 'whole', timeAdded: new Date().getTime(), timeExpired: null})
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body).to.be.an('array');
@@ -25,7 +25,7 @@ describe('test inventory api endpoints', () => {
 	});
 	it('should save a second item', (done) => {
 		request(app).put('/someId/inventory')
-		.send({title: 'milk', quantity: 2, units: 'l', dateAdded: new Date(), expiryDate: null})
+		.send({title: 'milk', quantity: 2, units: 'l', timeAdded: new Date().getTime(), timeExpired: null})
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body).to.be.an('array');
@@ -43,8 +43,8 @@ describe('test inventory api endpoints', () => {
 			expect(res.body[0]).to.have.property('title');
 			expect(res.body[0]).to.have.property('quantity');
 			expect(res.body[0]).to.have.property('units');
-			expect(res.body[0]).to.have.property('dateAdded');
-			expect(res.body[0]).to.have.property('expiryDate');
+			expect(res.body[0]).to.have.property('timeAdded');
+			expect(res.body[0]).to.have.property('timeExpired');
 			done();
 
 			itemId = res.body[0]._id;
@@ -58,8 +58,8 @@ describe('test inventory api endpoints', () => {
 			expect(res.body).to.have.property('title');
 			expect(res.body).to.have.property('quantity');
 			expect(res.body).to.have.property('units');
-			expect(res.body).to.have.property('dateAdded');
-			expect(res.body).to.have.property('expiryDate');
+			expect(res.body).to.have.property('timeAdded');
+			expect(res.body).to.have.property('timeExpired');
 			done();
 		});
 	});

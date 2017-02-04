@@ -26,7 +26,7 @@ export function createItem(req, res) {
 		quantity: req.body.quantity || 1,
 		units: req.body.units || '',
 		timeAdded: req.body.timeAdded || new Date().getTime(),
-		expiryTime: req.body.expiryTime || null
+		timeExpired: req.body.timeExpired || null
 	});
 
 	item.save((err) => {
