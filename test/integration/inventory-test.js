@@ -1,7 +1,7 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 import chai from 'chai';
-import app from '../src/index.js';
+import app from '../../src/index.js';
 
 const expect = chai.expect;
 

@@ -1,5 +1,5 @@
 import chai from 'chai';
-import Item from '../src/models/item.js';
+import Item from '../../src/models/item.js';
 
 const expect = chai.expect;
 
