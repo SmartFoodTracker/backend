@@ -4,6 +4,8 @@ export function parseBarcode(req, res) {
 	const key = 'e2a3f4e45a2523d43526f73562461366';
 	const barcode = req.params.code;
 
+	res.set('Connection', 'close');
+
 	request(`https://api.outpan.com/v2/products/${barcode}?apikey=${key}`, (error, response, body) => {
 		if (!error && response.statusCode == 200) {
 			res.send(JSON.parse(body).name);
