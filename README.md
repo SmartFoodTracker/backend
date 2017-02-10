@@ -4,6 +4,8 @@ Based on the [boilerplate](https://github.com/babel/example-node-server) for a b
 
 ## usage
 
+Before running locally two environment variables must be set. Go to the Heroku dashboard settings, and reveal the environment variables. Set these on your local machine.
+
 Run the hot-reloading server in dev:
 ```
 $ npm run start
