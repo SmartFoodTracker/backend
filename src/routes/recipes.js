@@ -6,7 +6,7 @@ export function getRecipes(req, res) {
 	const ENDPOINT = 'https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex';
 	const RESULT_SIZE = 10;
 
-	let requestUrl = `${ENDPOINT}?includeIngredients=${req.query.ingredients}&number=${RESULT_SIZE}&ranking=1&addRecipeInformation=true`;
+	let requestUrl = `${ENDPOINT}?includeIngredients=${req.query.ingredients}&number=${RESULT_SIZE}&ranking=2&addRecipeInformation=true&instructionsRequired=true`;
 
 	// enum: places like american, japanese
 	if (req.query.cuisine) {
@@ -44,15 +44,17 @@ export function getRecipes(req, res) {
 
 	request(options, (error, response, body) => {
 		if (!error && response.statusCode == 200) {
-			res.send(body);
-			// todo, parse out the important parts and send to android app
-			// - name
-			// - steps
-			// - picture
-			// - summary of ingredients and anything missing
+			let payload = JSON.parse(body).results.map((result) => {
+				return {
+					title: result.title,
+					image: result.image,
+					steps: result.analyzedInstructions[0].steps.map((s) => s.step)
+				}
+			});
+
+			res.send(payload);
 		} else {
 			res.send(response);
-			// res.send('error getting recipes from spoonacular');
 		}
 	});
 }
