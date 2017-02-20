@@ -24,6 +24,10 @@ $ npm run serve
 
 Our Heroku instance has a web process that runs the above two commands to start the server.
 
+## docs
+
+It's all generated into the `/docs` directory, and available at: https://smartfoodtracker.github.io/backend/
+
 ## overview of repository
 
 `src/`: all the code for the server
