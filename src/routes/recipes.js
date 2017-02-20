@@ -1,6 +1,9 @@
 import request from 'request';
 
-
+/**
+* @api {get} /recipes Request Recipes Using Ingredients
+* 
+*/
 export function getRecipes(req, res) {
 
 	const ENDPOINT = 'https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex';
