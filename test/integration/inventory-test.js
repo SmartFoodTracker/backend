@@ -14,7 +14,7 @@ after((done) => {
 
 describe('test inventory api endpoints', () => {
 	it('should save an item', (done) => {
-		request(app).put('/someId/inventory')
+		request(app).put('/1/inventory')
 		.send({title: 'banana', quantity: 5, units: 'whole', timeAdded: new Date().getTime(), timeExpired: null})
 		.expect(200)
 		.end((err, res) => {
@@ -24,7 +24,7 @@ describe('test inventory api endpoints', () => {
 		});
 	});
 	it('should save a second item', (done) => {
-		request(app).put('/someId/inventory')
+		request(app).put('/1/inventory')
 		.send({title: 'milk', quantity: 2, units: 'l', timeAdded: new Date().getTime(), timeExpired: null})
 		.expect(200)
 		.end((err, res) => {
@@ -35,7 +35,7 @@ describe('test inventory api endpoints', () => {
 		})
 	});
 	it('should return all items', (done) => {
-		request(app).get('/someId/inventory')
+		request(app).get('/1/inventory')
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body).to.be.an('array');
@@ -51,7 +51,7 @@ describe('test inventory api endpoints', () => {
 		});
 	});
 	it('should return an item by id', (done) => {
-		request(app).get(`/someId/inventory/${itemId}`)
+		request(app).get(`/1/inventory/${itemId}`)
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body).to.be.an('object');
@@ -64,7 +64,7 @@ describe('test inventory api endpoints', () => {
 		});
 	});
 	it('should edit an item by id', (done) => {
-		request(app).put(`/someId/inventory/${itemId}`)
+		request(app).put(`/1/inventory/${itemId}`)
 		.send({title: 'orange'})
 		.expect(200)
 		.end((err, res) => {
@@ -74,7 +74,7 @@ describe('test inventory api endpoints', () => {
 		});
 	});
 	it('should delete an item by id', (done) => {
-		request(app).delete(`/someId/inventory/${itemId}`)
+		request(app).delete(`/1/inventory/${itemId}`)
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body).to.be.an('array');

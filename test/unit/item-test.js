@@ -46,6 +46,16 @@ const checks = [
 		key: 'timeExpired',
 		value: 'tomorrow',
 		name: errorType('timeExpired')
+	},
+	{
+		key: 'deviceId',
+		value: undefined,
+		name: errorMissing('deviceId')
+	},
+	{
+		key: 'deviceId',
+		value: 'happy',
+		name: errorType('deviceId')
 	}
 ];
 
@@ -56,7 +66,8 @@ function replace(check) {
 			quantity: 1,
 			units: 'l',
 			timeAdded: new Date().getTime(),
-			timeExpired: undefined
+			timeExpired: undefined,
+			deviceId: 1
 		});
 
 		item[check.key] = check.value; 

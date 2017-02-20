@@ -5,7 +5,8 @@ let itemSchema = new mongoose.Schema({
 	quantity: {type: Number, required: true},
 	units: {type: String, enum: ['kg', 'lb', 'l', 'whole'], required: true},
 	timeAdded: {type: Number, required: true},
-	timeExpired: {type: Number}
+	timeExpired: {type: Number},
+	deviceId: {type: Number, required: true}
 });
 
 let Item = mongoose.model('Items', itemSchema);

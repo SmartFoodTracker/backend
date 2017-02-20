@@ -83,7 +83,8 @@ export function createItem(req, res) {
 		quantity: req.body.quantity,
 		units: req.body.units,
 		timeAdded: new Date().getTime(),
-		timeExpired: req.body.timeExpired
+		timeExpired: req.body.timeExpired,
+		deviceId: req.params.deviceId
 	});
 
 	item.save((err) => {
