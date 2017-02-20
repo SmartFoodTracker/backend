@@ -9,7 +9,14 @@ import config from './config/index.js';
 
 let app = express();
 
-mongoose.connect(config[process.env.NODE_ENV].mongo);
+mongoose.connect(config[process.env.NODE_ENV].mongo, {
+	server: {
+		socketOptions: {
+			socketTimeoutMS: 0,
+			connectionTimeout: 0
+		}
+	}
+});
 
 app.use(bodyParser.json({ limit: '50mb' }));
 
