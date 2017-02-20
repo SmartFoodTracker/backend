@@ -1,5 +1,11 @@
 import request from 'request';
 
+/**
+* @api {get} /barcode/:code Get Barcode Item Name
+* @apiGroup Barcode
+*
+* @apiParam (required) {String} code the barcode 			
+*/
 export function parseBarcode(req, res) {
 	const key = 'e2a3f4e45a2523d43526f73562461366';
 	const barcode = req.params.code;

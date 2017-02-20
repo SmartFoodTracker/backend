@@ -6,8 +6,14 @@ let speechClient = speech({
 	credentials: JSON.parse(process.env.GCLOUD_KEY)
 });
 
-// usage example: 
-//  curl -X POST --data-binary @"bridge.raw" -H "Content-Type: audio/wav" localhost:8080/speech
+/**
+* @api {post} /speech Parse Speech File
+* @apiGroup Speech
+*
+* @apiParam (body) {Binary} file raw audio file
+* @apiExample {curl} Example usage:
+ *     curl -X POST --data-binary @"bridge.raw" -H "Content-Type: audio/wav" localhost:8080/speech
+*/
 export function parseSpeech(req, res) {
 	fs.writeFile('audio.raw', req.body, 'binary', (err) => {
 		speechClient.recognize('./audio.raw', {
