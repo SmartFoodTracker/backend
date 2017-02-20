@@ -1,5 +1,10 @@
 import Device from '../models/device';
 
+/**
+* @api {post} /device Create Device
+* @apiGroup Device
+* @apiDescription stubbed for now
+*/
 export function newDevice(req, res) {
 	// stub for now with id: 1 and name: test
 	let device = new Device({

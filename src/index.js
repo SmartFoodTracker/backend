@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { getInventory, deleteItem, createItem, modifyItem, getItem } from './routes/inventory';
 import { parseSpeech } from './routes/speech';
 import { parseBarcode } from './routes/barcode';
-import { getRecipes } from './routes/recipes';
+import { getRecipes, getHomeRecipes } from './routes/recipes';
 import { newDevice } from './routes/device';
 import { newUser } from './routes/user';
 
@@ -23,8 +23,8 @@ mongoose.connect(config[process.env.NODE_ENV].mongo, {
 
 app.use(bodyParser.json({ limit: '50mb' }));
 
-app.post('/new/device', newDevice);
-app.post('/new/user', newUser);
+app.post('/device', newDevice);
+app.post('/user', newUser);
 
 app.get('/:deviceId/inventory', getInventory);
 app.put('/:deviceId/inventory', createItem);
@@ -36,6 +36,7 @@ app.post('/speech', bodyParser.raw({ type: 'audio/wav', limit: '50mb' }), parseS
 app.get('/barcode/:code', parseBarcode);
 
 app.get('/recipes', getRecipes);
+app.get('/:userId/recipes', getHomeRecipes);
 
 app.use((req, res, next) => {
 	res.status(404);

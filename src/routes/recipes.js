@@ -1,7 +1,10 @@
 import request from 'request';
+import User from '../models/user';
+import Item from '../models/item';
+
 
 /**
-* @api {get} /recipes Request Recipes Using Ingredients
+* @api {get} /recipes Generic Request Recipes
 * @apiGroup Recipes
 *
 * @apiParam (required) {String} ingredients comma seperated list of food item names
@@ -82,3 +85,62 @@ export function getRecipes(req, res) {
 		}
 	});
 }
+
+
+/**
+* @api {get} /:userId/recipes Request Recipes For User
+* @apiGroup Recipes
+*
+* @apiParam (required) {Number} userId user requesting recipes (for now use id: 1)
+*
+* @apiExample {curl} Example usage:
+*     curl http://food-fit.herokuapp.com/1/recipes
+*
+* @apiSuccessExample {json} Success-Response: 
+*		[
+*			{
+*				title: 'Zesty Tomato Sauce',
+*				image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
+*				steps: ['Fill pan with water', ...]
+*			}
+*			...
+*		]
+*/
+export function getHomeRecipes(req, res) {
+	User.findById(req.params.userId, (err, doc) => {
+		if (err) {
+			res.sendStatus(400);
+		}
+
+		Item.find({'deviceId': doc.deviceId}, (err, docs) => {
+			if (err) {
+				res.sendStatus(400);
+			}
+
+			req.query.ingredients = encodeURIComponent(docs.map((doc) => doc.title).join());
+			getRecipes(req, res);
+		});
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
