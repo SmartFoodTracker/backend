@@ -22,7 +22,8 @@ import Item from '../models/item';
 *			{
 *				title: 'Zesty Tomato Sauce',
 *				image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
-*				steps: ['Fill pan with water', ...]
+*				steps: ['Fill pan with water', ...],
+*       sourceUrl: 'https://spoonacular.com/apple-pie-syrup-534502'
 *			}
 *			...
 *		]
@@ -70,7 +71,8 @@ export function getRecipes(req, res) {
 					return {
 						title: result.title,
 						image: result.image,
-						steps: result.analyzedInstructions[0].steps.map((s) => s.step)
+						steps: result.analyzedInstructions.length > 0 ? result.analyzedInstructions[0].steps.map((s) => s.step): [],
+						sourceUrl: result.sourceUrl
 					}
 				});
 				let payload = {
