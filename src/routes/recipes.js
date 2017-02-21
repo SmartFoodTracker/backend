@@ -17,7 +17,7 @@ import Item from '../models/item';
 * @apiExample {curl} Example usage:
 *     curl http://food-fit.herokuapp.com/recipes?ingredients=tomato%2Clettuce%2Cchedder+cheese&intolerances=peanut&page=2
 *
-* @apiSuccessExample {json} Success-Response: 
+* @apiSuccessExample {json} Success-Response:
 *		[
 *			{
 *				title: 'Zesty Tomato Sauce',
@@ -73,19 +73,18 @@ export function getRecipes(req, res) {
 						steps: result.analyzedInstructions[0].steps.map((s) => s.step)
 					}
 				});
+				let payload = {
+					data: payloadData,
+					totalPages: 90, // API always gives 900 ranked results, our page size is 10
+					page: req.query.page || 1
+				}
+
+				res.send(payload);
 			} catch(err) {
 				console.error(err);
 				console.error(result);
 				res.sendStatus(400);
 			}
-
-			let payload = {
-				data: payloadData,
-				totalPages: 90, // API always gives 900 ranked results, our page size is 10
-				page: req.query.page || 1
-			}
-
-			res.send(payload);
 		} else {
 			res.send(response);
 		}
@@ -107,7 +106,7 @@ export function getRecipes(req, res) {
 * @apiExample {curl} Example usage:
 *     curl http://food-fit.herokuapp.com/1/recipes?page=2
 *
-* @apiSuccessExample {json} Success-Response: 
+* @apiSuccessExample {json} Success-Response:
 *		[
 *			{
 *				title: 'Zesty Tomato Sauce',
