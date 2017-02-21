@@ -65,13 +65,19 @@ export function getRecipes(req, res) {
 
 	request(options, (error, response, body) => {
 		if (!error && response.statusCode == 200) {
-			let payloadData = JSON.parse(body).results.map((result) => {
-				return {
-					title: result.title,
-					image: result.image,
-					steps: result.analyzedInstructions[0].steps.map((s) => s.step)
-				}
-			});
+			try {
+				let payloadData = JSON.parse(body).results.map((result) => {
+					return {
+						title: result.title,
+						image: result.image,
+						steps: result.analyzedInstructions[0].steps.map((s) => s.step)
+					}
+				});
+			} catch(err) {
+				console.error(err);
+				console.error(result);
+				res.sendStatus(400);
+			}
 
 			let payload = {
 				data: payloadData,
