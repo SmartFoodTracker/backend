@@ -82,8 +82,8 @@ export function getRecipes(req, res) {
 				res.send(payload);
 			} catch(err) {
 				console.error(err);
-				console.error(result);
-				res.sendStatus(400);
+				console.error(JSON.parse(body).results);
+				res.sendStatus(500);
 			}
 		} else {
 			res.send(response);
