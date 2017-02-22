@@ -76,7 +76,8 @@ export function getRecipes(req, res) {
 						title: result.title,
 						image: result.image,
 						steps: result.analyzedInstructions.length > 0 ? result.analyzedInstructions[0].steps.map((s) => s.step): [],
-						sourceUrl: result.sourceUrl
+						sourceUrl: result.sourceUrl,
+						id: result.id
 					}
 				});
 				let payload = {
