@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { getInventory, deleteItem, createItem, modifyItem, getItem } from './routes/inventory';
 import { parseSpeech } from './routes/speech';
 import { parseBarcode } from './routes/barcode';
-import { getRecipes, getHomeRecipes } from './routes/recipes';
+import { getRecipes, getHomeRecipes, getRecipe } from './routes/recipes';
 import { newDevice } from './routes/device';
 import { newUser } from './routes/user';
 
@@ -37,6 +37,7 @@ app.get('/barcode/:code', parseBarcode);
 
 app.get('/recipes', getRecipes);
 app.get('/:userId/recipes', getHomeRecipes);
+app.get('/recipes/:recipeId', getRecipe);
 
 app.use((req, res, next) => {
 	res.status(404);

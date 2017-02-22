@@ -24,7 +24,8 @@ import Item from '../models/item';
 *				title: 'Zesty Tomato Sauce',
 *				image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
 *				steps: ['Fill pan with water', ...],
-*       sourceUrl: 'https://spoonacular.com/apple-pie-syrup-534502'
+*       		sourceUrl: 'https://spoonacular.com/apple-pie-syrup-534502',
+*				id: 32592
 *			}
 *			...
 *		],
@@ -71,15 +72,7 @@ export function getRecipes(req, res) {
 	request(options, (error, response, body) => {
 		if (!error && response.statusCode == 200) {
 			try {
-				let payloadData = JSON.parse(body).results.map((result) => {
-					return {
-						title: result.title,
-						image: result.image,
-						steps: result.analyzedInstructions.length > 0 ? result.analyzedInstructions[0].steps.map((s) => s.step): [],
-						sourceUrl: result.sourceUrl,
-						id: result.id
-					}
-				});
+				let payloadData = JSON.parse(body).results.map((result) => recipeToResponse(result));
 				let payload = {
 					data: payloadData,
 					totalPages: 90, // API always gives 900 ranked results, our page size is 10
@@ -87,7 +80,7 @@ export function getRecipes(req, res) {
 				}
 
 				res.send(payload);
-			} catch(err) {
+			} catch (err) {
 				console.error(err);
 				console.error(JSON.parse(body).results);
 				res.sendStatus(500);
@@ -119,7 +112,9 @@ export function getRecipes(req, res) {
 *			{
 *				title: 'Zesty Tomato Sauce',
 *				image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
-*				steps: ['Fill pan with water', ...]
+*				steps: ['Fill pan with water', ...],
+*				sourceUrl: 'https://food.com',
+*				id: 32592
 *			}
 *			...
 *		],
@@ -145,23 +140,57 @@ export function getHomeRecipes(req, res) {
 }
 
 
+/**
+* @api {get} /recipes/:recipeId Request Recipe By Id
+* @apiGroup Recipes
+*
+* @apiParam (required) {Number} recipeId a valid recipeId obtained from either /:userId/recipes or /recipes
+*
+* @apiExample {curl} Example usage:
+*     curl http://food-fit.herokuapp.com/recipes/33
+*
+* @apiSuccessExample {json} Success-Response: 
+*	{
+*		title: 'Zesty Tomato Sauce',
+*		image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
+*		steps: ['Fill pan with water', ...],
+*		sourceUrl: 'https://food.com',
+*		id: 33
+*	}
+*/
+export function getRecipe(req, res) {
+	let options = {
+		url: `https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/${req.params.recipeId}/information`,
+		headers: {
+			'X-Mashape-Key': 'Uy01syGBrhmshkXhYeSBAnq42u5op1j3PXojsnD1I5DgLO4e7M',
+			'Accept': 'application/json'
+		}
+	};
 
+	request(options, (error, response, body) => {
+		if (!error && response.statusCode == 200) {
+			let recipe = JSON.parse(body);
 
+			try {
+				let payload = recipeToResponse(recipe);
+				res.send(payload);
+			} catch (err) {
+				console.error(err);
+				console.error(recipe);
+				res.sendStatus(500);
+			}
+		} else {
+			res.sendStatus(400);
+		}
+	});
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function recipeToResponse(recipe) {
+	return {
+		title: recipe.title,
+		image: recipe.image,
+		steps: recipe.analyzedInstructions.length > 0 ? recipe.analyzedInstructions[0].steps.map((s) => s.step): [],
+		sourceUrl: recipe.sourceUrl,
+		id: recipe.id
+	};
+}
