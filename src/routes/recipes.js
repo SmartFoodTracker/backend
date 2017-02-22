@@ -17,8 +17,9 @@ import Item from '../models/item';
 * @apiExample {curl} Example usage:
 *     curl http://food-fit.herokuapp.com/recipes?ingredients=tomato%2Clettuce%2Cchedder+cheese&intolerances=peanut&page=2
 *
-* @apiSuccessExample {json} Success-Response:
-*		[
+* @apiSuccessExample {json} Success-Response: 
+*	{		
+*		data: [
 *			{
 *				title: 'Zesty Tomato Sauce',
 *				image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
@@ -26,7 +27,10 @@ import Item from '../models/item';
 *       sourceUrl: 'https://spoonacular.com/apple-pie-syrup-534502'
 *			}
 *			...
-*		]
+*		],
+*		totalPages: 90,
+*		page: 2
+*	}
 */
 export function getRecipes(req, res) {
 
@@ -108,15 +112,19 @@ export function getRecipes(req, res) {
 * @apiExample {curl} Example usage:
 *     curl http://food-fit.herokuapp.com/1/recipes?page=2
 *
-* @apiSuccessExample {json} Success-Response:
-*		[
+* @apiSuccessExample {json} Success-Response: 
+*	{		
+*		data: [
 *			{
 *				title: 'Zesty Tomato Sauce',
 *				image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
 *				steps: ['Fill pan with water', ...]
 *			}
 *			...
-*		]
+*		],
+*		totalPages: 90,
+*		page: 2
+*	}
 */
 export function getHomeRecipes(req, res) {
 	User.findById(req.params.userId, (err, doc) => {
