@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import { getInventory, deleteItem, createItem, modifyItem, getItem } from './routes/inventory';
+import { getInventory, deleteItemById, deleteItemByTitle, createItem, modifyItem, getItem } from './routes/inventory';
 import { parseSpeech } from './routes/speech';
 import { parseBarcode } from './routes/barcode';
 import { getRecipes, getHomeRecipes, getRecipe } from './routes/recipes';
@@ -30,7 +30,8 @@ app.get('/:deviceId/inventory', getInventory);
 app.put('/:deviceId/inventory', createItem);
 app.put('/:deviceId/inventory/:itemId', modifyItem);
 app.get('/:deviceId/inventory/:itemId', getItem);
-app.delete('/:deviceId/inventory/:itemId', deleteItem);
+app.delete('/:deviceId/inventory/:itemId', deleteItemById);
+app.delete('/:deviceId/inventory/title/:itemTitle', deleteItemByTitle);
 
 app.post('/speech', bodyParser.raw({ type: 'audio/wav', limit: '50mb' }), parseSpeech);
 app.get('/barcode/:code', parseBarcode);

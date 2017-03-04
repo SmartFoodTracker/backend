@@ -26,7 +26,7 @@ export function getInventory(req, res) {
 }
 
 /**
-* @api {delete} /:deviceId/inventory/:itemId Delete Item
+* @api {delete} /:deviceId/inventory/:itemId Delete Item By Id
 * @apiGroup Inventory
 *
 * @apiParam (required) {String} deviceId pass any string for now
@@ -41,8 +41,35 @@ export function getInventory(req, res) {
 *			...
 *		] 
 */
-export function deleteItem(req, res) {
+export function deleteItemById(req, res) {
 	Item.findByIdAndRemove(req.params.itemId, (err, doc) => {
+		if (err) {
+			res.sendStatus(400);
+		} else {
+			getInventory(req, res);
+		}
+	});
+}
+
+
+/**
+* @api {delete} /:deviceId/inventory/title/:itemTitle Delete Item By Title
+* @apiGroup Inventory
+*
+* @apiParam (required) {String} deviceId pass any string for now
+* @apiParam (required) {String} itemTitle inventory item name string
+* @apiSuccessExample {json} Success-Response: all items in inventory
+*		[
+*			{
+*				title: 'apple',
+*				quantity: 2,
+*				...
+*			}
+*			...
+*		] 
+*/
+export function deleteItemByTitle(req, res) {
+	Item.findOneAndRemove({ title: req.params.itemTitle }, (err, doc) => {
 		if (err) {
 			res.sendStatus(400);
 		} else {
