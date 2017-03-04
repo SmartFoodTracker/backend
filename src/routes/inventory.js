@@ -81,6 +81,7 @@ export function deleteItemByTitle(req, res) {
 
 /**
 * @api {put} /:deviceId/inventory Add Item To Inventory
+* @apiDescription Note: will update item (having same affect as PUT '/:deviceId/inventory/:itemId') if title already exists in inventory
 * @apiGroup Inventory
 *
 * @apiParam (required) {String} deviceId pass any string for now
@@ -105,20 +106,31 @@ export function deleteItemByTitle(req, res) {
 *		] 
 */
 export function createItem(req, res) {
-	let item = new Item({
-		title: req.body.title,
-		quantity: req.body.quantity,
-		units: req.body.units,
-		timeAdded: new Date().getTime(),
-		timeExpired: req.body.timeExpired,
-		deviceId: req.params.deviceId
-	});
-
-	item.save((err) => {
+	// if item exists call modifyItem(), otherwise save new inventory item
+	Item.find({ title: req.body.title }, (err, documents) => {
 		if (err) {
 			res.sendStatus(400);
+
+		} else if (documents.length) {
+			modifyItem(req, res, documents[0]._id);
+
 		} else {
-			getInventory(req, res);
+			let item = new Item({
+				title: req.body.title,
+				quantity: req.body.quantity,
+				units: req.body.units,
+				timeAdded: new Date().getTime(),
+				timeExpired: req.body.timeExpired,
+				deviceId: req.params.deviceId
+			});
+
+			item.save((err) => {
+				if (err) {
+					res.sendStatus(400);
+				} else {
+					getInventory(req, res);
+				}
+			});
 		}
 	});
 }
@@ -140,8 +152,8 @@ export function createItem(req, res) {
 *			...
 *		] 
 */
-export function modifyItem(req, res) {
-	Item.findByIdAndUpdate(req.params.itemId, { $set: req.body }, { runValidators: true }, (err, doc) => {
+export function modifyItem(req, res, itemId) {
+	Item.findByIdAndUpdate(itemId || req.params.itemId, { $set: req.body }, { runValidators: true }, (err, doc) => {
 		if (err) {
 			res.sendStatus(400);
 		} else {
