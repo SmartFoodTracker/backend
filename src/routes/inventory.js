@@ -8,8 +8,8 @@ import Item from '../models/item';
 * @apiSuccessExample {json} Success-Response: all items in inventory
 *		[
 *			{
-*				title: 'apple',
-*				quantity: 2,
+*				"title": "apple",
+*				"quantity": 2,
 *				...
 *			}
 *			...
@@ -34,8 +34,8 @@ export function getInventory(req, res) {
 * @apiSuccessExample {json} Success-Response: all items in inventory
 *		[
 *			{
-*				title: 'apple',
-*				quantity: 2,
+*				"title": "apple",
+*				"quantity": 2,
 *				...
 *			}
 *			...
@@ -61,8 +61,8 @@ export function deleteItemById(req, res) {
 * @apiSuccessExample {json} Success-Response: all items in inventory
 *		[
 *			{
-*				title: 'apple',
-*				quantity: 2,
+*				"title": "apple",
+*				"quantity": 2,
 *				...
 *			}
 *			...
@@ -88,18 +88,18 @@ export function deleteItemByTitle(req, res) {
 * @apiParam (body) {Object} item item to add to the inventory
 * @apiParamExample {json} Request-Body-Example:
 *		{
-*			title: 'apple',
-			quantity: 2,
-			units: 'whole',
-			timeAdded: 1487568006,
-			timeExpired: 1487742114
+*			"title": "apple",
+			"quantity": 2,
+			"units": "whole",
+			"timeAdded": 1487568006,
+			"timeExpired": 1487742114
 *		}
 *
 * @apiSuccessExample {json} Success-Response: all items in inventory
 *		[
 *			{
-*				title: 'apple',
-*				quantity: 2,
+*				"title": "apple",
+*				"quantity": 2,
 *				...
 *			}
 *			...
@@ -145,8 +145,8 @@ export function createItem(req, res) {
 * @apiSuccessExample {json} Success-Response: all items in inventory
 *		[
 *			{
-*				title: 'apple',
-*				quantity: 2,
+*				"title": "apple",
+*				"quantity": 2,
 *				...
 *			}
 *			...
@@ -170,8 +170,8 @@ export function modifyItem(req, res, itemId) {
 * @apiParam (required) {String} itemId inventory item unique id
 * @apiSuccessExample {json} Success-Response: item requested
 *			{
-*				title: 'apple',
-*				quantity: 2,
+*				"title": "apple",
+*				"quantity": 2,
 *				...
 *			}
 */

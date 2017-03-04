@@ -19,18 +19,18 @@ import Item from '../models/item';
 *
 * @apiSuccessExample {json} Success-Response: 
 *	{		
-*		data: [
+*		"data": [
 *			{
-*				title: 'Zesty Tomato Sauce',
-*				image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
-*				steps: ['Fill pan with water', ...],
-*       		sourceUrl: 'https://spoonacular.com/apple-pie-syrup-534502',
-*				id: 32592
+*				"title": "Zesty Tomato Sauce",
+*				"image": "https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg",
+*				"steps": ["Fill pan with water", ...],
+*       		"sourceUrl": "https://spoonacular.com/apple-pie-syrup-534502",
+*				"id": 32592
 *			}
 *			...
 *		],
-*		totalPages: 90,
-*		page: 2
+*		"totalPages": 90,
+*		"page": 2
 *	}
 */
 export function getRecipes(req, res) {
@@ -108,18 +108,18 @@ export function getRecipes(req, res) {
 *
 * @apiSuccessExample {json} Success-Response: 
 *	{		
-*		data: [
+*		"data": [
 *			{
-*				title: 'Zesty Tomato Sauce',
-*				image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
-*				steps: ['Fill pan with water', ...],
-*				sourceUrl: 'https://food.com',
-*				id: 32592
+*				"title": "Zesty Tomato Sauce",
+*				"image": "https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg",
+*				"steps": ["Fill pan with water", ...],
+*       		"sourceUrl": "https://spoonacular.com/apple-pie-syrup-534502",
+*				"id": 32592
 *			}
 *			...
 *		],
-*		totalPages: 90,
-*		page: 2
+*		"totalPages": 90,
+*		"page": 2
 *	}
 */
 export function getHomeRecipes(req, res) {
@@ -150,13 +150,13 @@ export function getHomeRecipes(req, res) {
 *     curl http://food-fit.herokuapp.com/recipes/33
 *
 * @apiSuccessExample {json} Success-Response: 
-*	{
-*		title: 'Zesty Tomato Sauce',
-*		image: 'https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg',
-*		steps: ['Fill pan with water', ...],
-*		sourceUrl: 'https://food.com',
-*		id: 33
-*	}
+*			{
+*				"title": "Zesty Tomato Sauce",
+*				"image": "https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg",
+*				"steps": ["Fill pan with water", ...],
+*       		"sourceUrl": "https://spoonacular.com/apple-pie-syrup-534502",
+*				"id": 33
+*			}
 */
 export function getRecipe(req, res) {
 	let options = {
