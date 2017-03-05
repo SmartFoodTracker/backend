@@ -16,13 +16,10 @@ Run the tests:
 $ npm test
 ```
 
-Build and mimic running in production (heroku):
+Build and mimic running in production:
 ```
-$ npm run build
 $ npm run serve
 ```
-
-Our Heroku instance has a web process that runs the above two commands to start the server.
 
 ## docs
 
@@ -45,5 +42,7 @@ It's all generated into the `/docs` directory, and available at: https://smartfo
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`integration/`: testing particular endpoints with a mocked MongoDB running locally
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`unit/`: testing for MongDB models ensuring proper validation
+
+`docs/`: documentation generated with [apidoc](http://apidocjs.com/), and available hosted at [https://smartfoodtracker.github.io/backend/](https://smartfoodtracker.github.io/backend/)
 
 `package.json`: declaring the dependencies and dev-dependencies (dev-deps not installed in prod).
