@@ -39,5 +39,3 @@ export function parseSpeech(req, res) {
 		});
 	});
 }
-
-{"code":13,"metadata":{"_internal_repr":{}},"note":"Exception occurred in retry method that was not classified as transient"}
