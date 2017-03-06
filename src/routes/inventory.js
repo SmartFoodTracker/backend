@@ -69,7 +69,7 @@ export function deleteItemById(req, res) {
 *		] 
 */
 export function deleteItemByTitle(req, res) {
-	Item.findOneAndRemove({ title: req.params.itemTitle }, (err, doc) => {
+	Item.findOneAndRemove({ title: req.params.itemTitle.toLowerCase() }, (err, doc) => {
 		if (err) {
 			res.sendStatus(400);
 		} else {
@@ -107,7 +107,7 @@ export function deleteItemByTitle(req, res) {
 */
 export function createItem(req, res) {
 	// if item exists call modifyItem(), otherwise save new inventory item
-	Item.find({ title: req.body.title }, (err, documents) => {
+	Item.find({ title: req.body.title.toLowerCase() }, (err, documents) => {
 		if (err) {
 			res.sendStatus(400);
 
@@ -116,7 +116,7 @@ export function createItem(req, res) {
 
 		} else {
 			let item = new Item({
-				title: req.body.title,
+				title: req.body.title.toLowerCase(),
 				quantity: req.body.quantity,
 				units: req.body.units,
 				timeAdded: new Date().getTime(),
