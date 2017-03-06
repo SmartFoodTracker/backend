@@ -112,7 +112,8 @@ export function createItem(req, res) {
 			res.sendStatus(400);
 
 		} else if (documents.length) {
-			modifyItem(req, res, documents[0]._id);
+			req.itemId = documents[0]._id;
+			modifyItem(req, res);
 
 		} else {
 			let item = new Item({
@@ -121,7 +122,7 @@ export function createItem(req, res) {
 				units: req.body.units,
 				timeAdded: new Date().getTime(),
 				timeExpired: req.body.timeExpired,
-				deviceId: req.params.deviceId
+				deviceId: 1
 			});
 
 			item.save((err) => {
@@ -152,8 +153,8 @@ export function createItem(req, res) {
 *			...
 *		] 
 */
-export function modifyItem(req, res, itemId) {
-	Item.findByIdAndUpdate(itemId || req.params.itemId, { $set: req.body }, { runValidators: true }, (err, doc) => {
+export function modifyItem(req, res) {
+	Item.findByIdAndUpdate(req.itemId || req.params.itemId, { $set: req.body }, { runValidators: true }, (err, doc) => {
 		if (err) {
 			res.sendStatus(400);
 		} else {

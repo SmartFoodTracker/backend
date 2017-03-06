@@ -34,6 +34,18 @@ describe('test inventory api endpoints', () => {
 			done();
 		})
 	});
+	it('should edit the existing item when attempting to save item existing', (done) => {
+		request(app).put('/1/inventory')
+		.send({title: 'banana', quantity: 1, units: 'l', timeAdded: new Date().getTime(), timeExpired: null})
+		.expect(200)
+		.end((err, res) => {
+			expect(res.body).to.be.an('array');
+			expect(res.body[0]['title']).to.equal('banana');
+			expect(res.body[0]['quantity']).to.equal(1);
+			expect(res.body.length).to.equal(2);
+			done();
+		})
+	});
 	it('should return all items', (done) => {
 		request(app).get('/1/inventory')
 		.expect(200)
@@ -75,6 +87,15 @@ describe('test inventory api endpoints', () => {
 	});
 	it('should delete an item by id', (done) => {
 		request(app).delete(`/1/inventory/${itemId}`)
+		.expect(200)
+		.end((err, res) => {
+			expect(res.body).to.be.an('array');
+			expect(res.body.length).to.equal(1);
+			done();
+		});
+	});	
+	it('should delete an item by title', (done) => {
+		request(app).delete('/1/inventory/title/banana')
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body).to.be.an('array');
