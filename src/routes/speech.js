@@ -29,7 +29,7 @@ export function parseSpeech(req, res) {
 	fs.writeFile('audio.raw', req.body, 'binary', (err) => {
 		speechClient.recognize('./audio.raw', {
 			encoding: 'LINEAR16',
-			sampleRate: 16000
+			sampleRate: 32000
 		}, (err, transcript) => {
 			if (err) {
 				res.send(err);
@@ -39,3 +39,5 @@ export function parseSpeech(req, res) {
 		});
 	});
 }
+
+{"code":13,"metadata":{"_internal_repr":{}},"note":"Exception occurred in retry method that was not classified as transient"}
