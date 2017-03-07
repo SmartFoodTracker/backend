@@ -47,7 +47,7 @@ export function getInventory(req, res) {
 *		] 
 */
 export function deleteItemById(req, res) {
-	Item.findByIdAndRemove(req.params.itemId, (err, doc) => {
+	Item.findByIdAndRemove(req.itemId || req.params.itemId, (err, doc) => {
 		if (err) {
 			res.sendStatus(400);
 		} else {
@@ -86,7 +86,9 @@ export function deleteItemByTitle(req, res) {
 
 /**
 * @api {put} /:deviceId/inventory Add Item To Inventory
-* @apiDescription Note: will update item (having same affect as PUT '/:deviceId/inventory/:itemId') if title already exists in inventory
+* @apiDescription Note: body is JSON of fields in item. If "title" field value already exists, will modify existing item. In this case,
+* the value of the "inventory" field will increment, other fields will overwrite. If increment of inventory field results in 0, item will be deleted.
+* 
 * @apiGroup Inventory
 *
 * @apiParam (required) {String} deviceId pass any string for now
@@ -144,10 +146,12 @@ export function createItem(req, res) {
 /**
 * @api {put} /:deviceId/inventory/:itemId Modify Item In Inventory
 * @apiGroup Inventory
+* @apiDescription Note: body is JSON of fields to update. "inventory" field value will increment, others will overwrite. If increment
+* of inventory field results in 0, item will be deleted.
 *
 * @apiParam (required) {String} deviceId pass any string for now
 * @apiParam (required) {String} itemId inventory item unique id to modify
-* @apiParam (body) {Object} item fields of item to update
+* @apiParam (body) {Object} item fields of item to update (inventory field value will increment, others will overwrite)
 * @apiSuccessExample {json} Success-Response: all items in inventory
 *		[
 *			{
@@ -159,11 +163,30 @@ export function createItem(req, res) {
 *		] 
 */
 export function modifyItem(req, res) {
-	Item.findByIdAndUpdate(req.itemId || req.params.itemId, { $set: req.body }, { runValidators: true }, (err, doc) => {
-		if (err) {
-			res.sendStatus(400);
+	Item.findById(req.itemId || req.params.itemId, (err, doc) => {
+		if (err) res.sendStatus(400);
+
+		// increment quantity by diff, overwrite other fields
+		Object.keys(req.body).forEach((key) => {
+			if (key === 'quantity') {
+				doc.quantity += req.body.quantity;
+			} else {
+				doc[key] = req.body[key];
+			}
+		});
+
+		// delete item if zero quantity, otherwise save
+		if (doc.quantity === 0) {
+			req.itemId = doc._id;
+			deleteItemById(req, res);
 		} else {
-			getInventory(req, res);
+			doc.save((err, updatedDoc) => {
+				if (err) {
+					res.sendStatus(400);
+				} else {
+					getInventory(req, res);
+				}
+			});
 		}
 	});
 }

@@ -20,7 +20,7 @@ after((done) => {
 describe('test inventory api endpoints', () => {
 	it('should save an item', (done) => {
 		request(app).put('/1/inventory')
-		.send({title: 'banana', quantity: 5, units: 'whole', timeAdded: new Date().getTime(), timeExpired: null})
+		.send({title: 'banana', quantity: 5, units: 'whole'})
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body).to.be.an('array');
@@ -30,7 +30,7 @@ describe('test inventory api endpoints', () => {
 	});
 	it('should save a second item', (done) => {
 		request(app).put('/1/inventory')
-		.send({title: 'milk', quantity: 2, units: 'l', timeAdded: new Date().getTime(), timeExpired: null})
+		.send({title: 'milk', quantity: 2, units: 'l'})
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body).to.be.an('array');
@@ -41,12 +41,33 @@ describe('test inventory api endpoints', () => {
 	});
 	it('should edit the existing item when attempting to save item existing', (done) => {
 		request(app).put('/1/inventory')
-		.send({title: 'banana', quantity: 1, units: 'l', timeAdded: new Date().getTime(), timeExpired: null})
+		.send({title: 'banana', quantity: 1, units: 'l'})
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body).to.be.an('array');
 			expect(res.body[0]['title']).to.equal('banana');
-			expect(res.body[0]['quantity']).to.equal(1);
+			expect(res.body[0]['quantity']).to.equal(6); // because quantity is incremented
+			expect(res.body.length).to.equal(2);
+			done();
+		})
+	});
+	it('should delete an item if inventory field value is zero after modification', (done) => {
+		request(app).put('/1/inventory')
+		.send({title: 'milk', quantity: -2, units: 'l'})
+		.expect(200)
+		.end((err, res) => {
+			expect(res.body).to.be.an('array');
+			expect(res.body.length).to.equal(1);
+			done();
+		})
+	});
+	it('should recreate an item previously deleted', (done) => {
+		request(app).put('/1/inventory')
+		.send({title: 'milk', quantity: 2, units: 'l'})
+		.expect(200)
+		.end((err, res) => {
+			expect(res.body).to.be.an('array');
+			expect(res.body[1]['title']).to.equal('milk');
 			expect(res.body.length).to.equal(2);
 			done();
 		})
@@ -61,7 +82,6 @@ describe('test inventory api endpoints', () => {
 			expect(res.body[0]).to.have.property('quantity');
 			expect(res.body[0]).to.have.property('units');
 			expect(res.body[0]).to.have.property('timeAdded');
-			expect(res.body[0]).to.have.property('timeExpired');
 			done();
 
 			itemId = res.body[0]._id;
@@ -76,7 +96,6 @@ describe('test inventory api endpoints', () => {
 			expect(res.body).to.have.property('quantity');
 			expect(res.body).to.have.property('units');
 			expect(res.body).to.have.property('timeAdded');
-			expect(res.body).to.have.property('timeExpired');
 			done();
 		});
 	});
