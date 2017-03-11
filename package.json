@@ -5,7 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=development nodemon src/index.js --exec babel-node --presets es2015,stage-2",
     "serve": "babel src -d dist && NODE_ENV=production node dist/index.js",
-    "test": "NODE_ENV=test mocha --compilers js:babel-register || true"
+    "test": "NODE_ENV=test mocha --compilers js:babel-register --timeout 10000 || true"
   },
   "author": "Andrew Hoskins",
   "devDependencies": {

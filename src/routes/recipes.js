@@ -129,13 +129,15 @@ export function getRecipes(req, res) {
 */
 export function getHomeRecipes(req, res) {
 	User.findById(req.params.userId, (err, doc) => {
-		if (err) {
+		if (err || doc == null) {
 			res.sendStatus(400);
+			return;
 		}
 
 		Item.find({'deviceId': doc.deviceId}, (err, docs) => {
-			if (err) {
+			if (err || doc == null) {
 				res.sendStatus(400);
+				return;
 			}
 
 			req.query.ingredients = encodeURIComponent(docs.map((doc) => doc.title).join());
