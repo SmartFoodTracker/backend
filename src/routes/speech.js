@@ -23,12 +23,14 @@ let speechClient = speech({
 });
 
 /**
-* @api {post} /speech Parse Speech File
+* @api {post} /speech/:sampleRate Parse Speech File
 * @apiGroup Speech
+* @apiDescription With no "sampleRate" parameter given, default is 32000Hz. Pass sample rate either 32000 or 16000, depending on the environment.
 *
+* @apiParam (optional) {String} sampleRate either 32000 or 16000
 * @apiParam (body) {Binary} file raw audio file
 * @apiExample {curl} Example usage:
- *     curl -X POST --data-binary @"bridge.raw" -H "Content-Type: audio/wav" localhost:8080/speech
+ *     curl -X POST --data-binary @"bridge.raw" -H "Content-Type: audio/wav" localhost:8080/speech/16000
 */
 export function parseSpeech(req, res) {
 	// if sample rate given, it must be 16k or 32k, otherwise its an error
