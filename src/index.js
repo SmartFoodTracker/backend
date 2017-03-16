@@ -38,7 +38,7 @@ app.get('/:deviceId/inventory/:itemId', getItem);
 app.delete('/:deviceId/inventory/:itemId', deleteItemById);
 app.delete('/:deviceId/inventory/title/:itemTitle', deleteItemByTitle);
 
-app.post('/speech', bodyParser.raw({ type: 'audio/wav', limit: '50mb' }), parseSpeech);
+app.post('/speech/:sampleRate*?', bodyParser.raw({ type: 'audio/wav', limit: '50mb' }), parseSpeech);
 app.get('/barcode/:code', parseBarcode);
 
 app.get('/recipes', getRecipes);

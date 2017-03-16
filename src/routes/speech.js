@@ -31,10 +31,21 @@ let speechClient = speech({
  *     curl -X POST --data-binary @"bridge.raw" -H "Content-Type: audio/wav" localhost:8080/speech
 */
 export function parseSpeech(req, res) {
+	// if sample rate given, it must be 16k or 32k, otherwise its an error
+	let sampleRate = null;
+	if (req.params.sampleRate) {
+		if (req.params.sampleRate == '16000' || req.params.sampleRate === '32000') {
+			sampleRate = parseInt(req.params.sampleRate);
+		} else {
+			res.sendStatus(400);
+			return;
+		}
+	}
+
 	fs.writeFile('audio.raw', req.body, 'binary', (err) => {
 		speechClient.recognize('./audio.raw', {
 			encoding: 'LINEAR16',
-			sampleRate: 32000
+			sampleRate: sampleRate || 32000
 		}, (err, transcript) => {
 			if (err) {
 				res.send(err);
@@ -44,3 +55,4 @@ export function parseSpeech(req, res) {
 		});
 	});
 }
+
