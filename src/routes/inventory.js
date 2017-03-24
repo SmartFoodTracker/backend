@@ -97,9 +97,7 @@ export function deleteItemByTitle(req, res) {
 *		{
 *			"title": "apple",
 			"quantity": 2,
-			"units": "whole",
-			"timeAdded": 1487568006,
-			"timeExpired": 1487742114
+			"units": "whole"
 *		}
 *
 * @apiSuccessExample {json} Success-Response: all items in inventory
@@ -170,7 +168,9 @@ export function modifyItem(req, res) {
 		Object.keys(req.body).forEach((key) => {
 			if (key === 'quantity') {
 				doc.quantity += req.body.quantity;
-			} else {
+			} else if (key === 'title') {
+				doc.title = req.body.title.toLowerCase();
+			}  else {
 				doc[key] = req.body[key];
 			}
 		});
