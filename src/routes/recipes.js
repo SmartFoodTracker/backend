@@ -30,6 +30,8 @@ import Item from '../models/item';
 *				"image": "https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg",
 *				"steps": ["Fill pan with water", ...],
 *       		"sourceUrl": "https://spoonacular.com/apple-pie-syrup-534502",
+*				"satisfiedIngredients": ["tomato"],
+*				"unsatisfiedIngredients": ["pepper", "salt"]
 *				"id": 32592
 *			}
 *			...
@@ -133,7 +135,7 @@ function recipeToResponse(recipe, inventory) {
 
 	let satisfiedIngredients = Array.from(allIngredients)
 								.filter((ingredient) => inventory.some((item) => ingredient.indexOf(item) > -1 || item.indexOf(ingredient) > -1));
-	let neededIngredients = allIngredients.difference(new Set(satisfiedIngredients));
+	let unsatisfiedIngredients = allIngredients.difference(new Set(satisfiedIngredients));
 
 	return {
 		title: recipe.title,
@@ -141,7 +143,7 @@ function recipeToResponse(recipe, inventory) {
 		steps: recipe.analyzedInstructions.length > 0 ? recipe.analyzedInstructions[0].steps.map((s) => s.step): [],
 		sourceUrl: recipe.sourceUrl,
 		satisfiedIngredients: satisfiedIngredients,
-		neededIngredients: neededIngredients,
+		unsatisfiedIngredients: unsatisfiedIngredients,
 		id: recipe.id
 	};
 }
