@@ -8,3 +8,6 @@ import './unit/item-test';
 import './integration/recipe-test';
 import './integration/barcode-test';
 import './integration/speech-test';
+import './unit/device-test';
+import './unit/user-test';
+
