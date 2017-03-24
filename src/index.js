@@ -9,7 +9,7 @@ import mongoose from 'mongoose';
 import { getInventory, deleteItemById, deleteItemByTitle, createItem, modifyItem, getItem } from './routes/inventory';
 import { parseSpeech } from './routes/speech';
 import { parseBarcode } from './routes/barcode';
-import { getRecipes, getHomeRecipes, getRecipe } from './routes/recipes';
+import { getHomeRecipes } from './routes/recipes';
 import { newDevice } from './routes/device';
 import { newUser } from './routes/user';
 
@@ -41,9 +41,7 @@ app.delete('/:deviceId/inventory/title/:itemTitle', deleteItemByTitle);
 app.post('/speech/:sampleRate?', bodyParser.raw({ type: 'audio/wav', limit: '50mb' }), parseSpeech);
 app.get('/barcode/:code', parseBarcode);
 
-app.get('/recipes', getRecipes);
 app.get('/:userId/recipes', getHomeRecipes);
-app.get('/recipes/:recipeId', getRecipe);
 
 app.use((req, res, next) => {
 	res.status(404);
