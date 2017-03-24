@@ -50,7 +50,9 @@ export function parseSpeech(req, res) {
 			sampleRate: sampleRate || 32000
 		}, (err, transcript) => {
 			if (err) {
-				res.send(err);
+				res.sendStatus(400);
+			} else if (!transcript) {
+				res.send('Unable to recognize');
 			} else {
 				res.send(transcript);
 			}
