@@ -18,7 +18,7 @@ export function parseBarcode(req, res) {
 	res.set('Connection', 'close');
 
 	request(`https://api.outpan.com/v2/products/${barcode}?apikey=${key}`, (error, response, body) => {
-		if (!error && response.statusCode == 200) {
+		if (!error && response.statusCode == 200 && JSON.parse(body).name) {
 			res.send(JSON.parse(body).name);
 		} else {
 			res.send('Unknown product');

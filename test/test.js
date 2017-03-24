@@ -6,3 +6,4 @@
 import './integration/inventory-test';
 import './unit/item-test';
 import './integration/recipe-test';
+import './integration/barcode-test';
