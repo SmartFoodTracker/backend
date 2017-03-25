@@ -121,10 +121,32 @@ function recipeToResponse(recipe, inventory) {
 	let unsatisfiedIngredients = recipe.missedIngredients.map((ingredient) => ingredient.name);
 	let satisfiedIngredients = recipe.usedIngredients.map((ingredient) => ingredient.name);
 
+	let steps = recipe.analyzedInstructions.length > 0 ? recipe.analyzedInstructions[0].steps.map((s) => s.step): [];
+
+	// parse out embedded step numbers, example: 'Do this.2. Then do this' => 'Do this. Then do this'
+	steps = steps.map((step) => step.replace(/[0-9]+.\s/, ' '));
+
+	// parse out end of string numbering, example: 'This.3.' => 'This.'
+	steps = steps.map((step) => step.replace(/[0-9]+.$/, ' ')); 
+
+	// parse out end of string numbering other case (without period), example: 'This.3' => 'This.'
+	steps = steps.map((step) => step.replace(/[0-9]+$/, ' ')); 
+
+	// split, example: 'Do this. Then do this' => 'Do this.', 'Then do this'
+	let splitSteps = [];
+	steps.forEach((step) => {
+		step.split('. ').forEach((s) => {
+			splitSteps.push(s);
+		});
+	});
+
+	// after all this regex, protect against an empty string happening
+	splitSteps = splitSteps.filter((step) => step.length > 0);
+
 	return {
 		title: recipe.title,
 		image: recipe.image,
-		steps: recipe.analyzedInstructions.length > 0 ? recipe.analyzedInstructions[0].steps.map((s) => s.step): [],
+		steps: splitSteps,
 		sourceUrl: recipe.sourceUrl,
 		satisfiedIngredients: satisfiedIngredients,
 		unsatisfiedIngredients: unsatisfiedIngredients,
