@@ -117,14 +117,6 @@ function getRecipes(req, res, inventory) {
 	});
 }
 
-Set.prototype.difference = function(setB) {
-    var difference = new Set(this);
-    for (var elem of setB) {
-        difference.delete(elem);
-    }
-    return difference;
-}
-
 function recipeToResponse(recipe, inventory) {
 	let unsatisfiedIngredients = recipe.missedIngredients.map((ingredient) => ingredient.name);
 	let satisfiedIngredients = recipe.usedIngredients.map((ingredient) => ingredient.name);
