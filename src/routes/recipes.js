@@ -64,7 +64,7 @@ function getRecipes(req, res, inventory) {
 	const ENDPOINT = 'https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex';
 	const RESULT_SIZE = 10;
 
-	let requestUrl = `${ENDPOINT}?includeIngredients=${req.query.ingredients}&number=${RESULT_SIZE}&ranking=2&addRecipeInformation=true&instructionsRequired=true`;
+	let requestUrl = `${ENDPOINT}?includeIngredients=${req.query.ingredients}&number=${RESULT_SIZE}&ranking=2&addRecipeInformation=true&instructionsRequired=true&fillIngredients=true`;
 
 	if (req.query.cuisine) {
 		requestUrl = requestUrl + `&cuisine=${req.query.cuisine}`;
@@ -126,16 +126,8 @@ Set.prototype.difference = function(setB) {
 }
 
 function recipeToResponse(recipe, inventory) {
-	let allIngredients = new Set();
-	for (let step of recipe.analyzedInstructions[0].steps) {
-		for (let ingredient of step.ingredients) {
-			allIngredients.add(ingredient.name);
-		}
-	}
-
-	let satisfiedIngredients = Array.from(allIngredients)
-								.filter((ingredient) => inventory.some((item) => ingredient.indexOf(item) > -1 || item.indexOf(ingredient) > -1));
-	let unsatisfiedIngredients = allIngredients.difference(new Set(satisfiedIngredients));
+	let unsatisfiedIngredients = recipe.missedIngredients.map((ingredient) => ingredient.name);
+	let satisfiedIngredients = recipe.usedIngredients.map((ingredient) => ingredient.name);
 
 	return {
 		title: recipe.title,
