@@ -16,7 +16,7 @@ import Item from '../models/item';
 * @apiParam (optional) {String} cuisine one of the following: african, chinese, japanese, korean, vietnamese, thai, indian, british, irish, french, italian, mexican, spanish, middle eastern, jewish, american, cajun, southern, greek, german, nordic, eastern european, caribbean, or latin american
 * @apiParam (optional) {String} intolerances one or more of the following comma seperated: dairy, egg, gluten, peanut, sesame, seafood, shellfish, soy, sulfite, tree nut, and wheat
 * @apiParam (optional) {String} query general recipe search string, ex: hamburger
-* @apiParam (optional) {Number} page next 10 results
+* @apiParam (optional) {Number} page next 10 results.
 * @apiParam (optional) {String} type one of the following: main course, side dish, dessert, appetizer, salad, bread, breakfast, soup, beverage, sauce, or drink
 *
 * @apiExample {curl} Example usage:
@@ -36,7 +36,6 @@ import Item from '../models/item';
 *			}
 *			...
 *		],
-*		"totalPages": 90,
 *		"page": 2
 *	}
 */
@@ -102,10 +101,10 @@ function getRecipes(req, res) {
 	request(options, (error, response, body) => {
 		if (!error && response.statusCode == 200) {
 			try {
+				console.log(JSON.parse(body));
 				let payloadData = JSON.parse(body).results.map((result) => recipeToResponse(result));
 				let payload = {
 					data: payloadData,
-					totalPages: 90, // API always gives 900 ranked results, our page size is 10
 					page: req.query.page || 1
 				}
 
