@@ -47,49 +47,23 @@ export function getHomeRecipes(req, res) {
 			return;
 		}
 
-		Item.find({'deviceId': doc.deviceId}, (err, docs) => {
+		Item.find({'deviceId': doc.deviceId}, (err, userItems) => {
 			if (err || doc == null) {
 				res.sendStatus(400);
 				return;
 			}
 
-			req.query.ingredients = encodeURIComponent(docs.map((doc) => doc.title).join());
+			// query param higher priority
+			if (!req.query.ingredients) {
+				req.query.ingredients = encodeURIComponent(userItems.map((doc) => doc.title).join());
+			}
+
 			getRecipes(req, res);
 		});
 	});
 }
 
-/**
-* @api {get} /recipes Generic Request Recipes
-* @apiGroup Recipes
-*
-* @apiParam (required) {String} ingredients comma seperated list of food item names
-* @apiParam (optional) {String} cuisine one of the following: african, chinese, japanese, korean, vietnamese, thai, indian, british, irish, french, italian, mexican, spanish, middle eastern, jewish, american, cajun, southern, greek, german, nordic, eastern european, caribbean, or latin american
-* @apiParam (optional) {String} intolerances one or more of the following comma seperated: dairy, egg, gluten, peanut, sesame, seafood, shellfish, soy, sulfite, tree nut, and wheat
-* @apiParam (optional) {String} query general recipe search string, ex: hamburger
-* @apiParam (optional) {Number} page next 10 results
-* @apiParam (optional) {String} type one of the following: main course, side dish, dessert, appetizer, salad, bread, breakfast, soup, beverage, sauce, or drink
-*
-* @apiExample {curl} Example usage:
-*     curl http://food-fit.herokuapp.com/recipes?ingredients=tomato%2Clettuce%2Cchedder+cheese&intolerances=peanut&page=2
-*
-* @apiSuccessExample {json} Success-Response: 
-*	{		
-*		"data": [
-*			{
-*				"title": "Zesty Tomato Sauce",
-*				"image": "https://spoonacular.com/recipeImages/zesty-tomato-sauce-268411.jpg",
-*				"steps": ["Fill pan with water", ...],
-*       		"sourceUrl": "https://spoonacular.com/apple-pie-syrup-534502",
-*				"id": 32592
-*			}
-*			...
-*		],
-*		"totalPages": 90,
-*		"page": 2
-*	}
-*/
-export function getRecipes(req, res) {
+function getRecipes(req, res) {
 
 	const ENDPOINT = 'https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex';
 	const RESULT_SIZE = 10;
