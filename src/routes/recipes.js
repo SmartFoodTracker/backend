@@ -101,7 +101,6 @@ function getRecipes(req, res) {
 	request(options, (error, response, body) => {
 		if (!error && response.statusCode == 200) {
 			try {
-				console.log(JSON.parse(body));
 				let payloadData = JSON.parse(body).results.map((result) => recipeToResponse(result));
 				let payload = {
 					data: payloadData,

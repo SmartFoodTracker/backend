@@ -28,7 +28,6 @@ describe('test recipe api endpoints', () => {
 		.expect(200)
 		.end((err, res) => {
 			expect(res.body.data).to.be.an('array');
-			expect(res.body.totalPages).to.equal(90);
 			expect(res.body.page).to.equal(1);
 			expect(res.body.data[0]).to.have.property('title');
 			expect(res.body.data[0]).to.have.property('image');
