@@ -121,6 +121,12 @@ export function createItem(req, res) {
 			modifyItem(req, res);
 
 		} else {
+			// silently don't add if negative quantity
+			if (req.body.quantity < 0) {
+				getInventory(req, res);
+				return;
+			} 
+
 			let item = new Item({
 				title: req.body.title.toLowerCase(),
 				quantity: req.body.quantity,
@@ -174,6 +180,9 @@ export function modifyItem(req, res) {
 				doc[key] = req.body[key];
 			}
 		});
+
+		// normalize negative to zero
+		doc.quantity = Math.max(0, doc.quantity);
 
 		// delete item if zero quantity, otherwise save
 		if (doc.quantity === 0) {
