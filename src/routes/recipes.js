@@ -47,7 +47,7 @@ export function getHomeRecipes(req, res) {
 		}
 
 		Item.find({'deviceId': doc.deviceId}, (err, userItems) => {
-			if (err || doc == null) {
+			if (err || userItems == null) {
 				res.sendStatus(400);
 				return;
 			}
@@ -57,12 +57,12 @@ export function getHomeRecipes(req, res) {
 				req.query.ingredients = encodeURIComponent(userItems.map((doc) => doc.title).join());
 			}
 
-			getRecipes(req, res);
+			getRecipes(req, res, userItems.map((doc) => doc.title));
 		});
 	});
 }
 
-function getRecipes(req, res) {
+function getRecipes(req, res, inventory) {
 
 	const ENDPOINT = 'https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/searchComplex';
 	const RESULT_SIZE = 10;
@@ -101,7 +101,7 @@ function getRecipes(req, res) {
 	request(options, (error, response, body) => {
 		if (!error && response.statusCode == 200) {
 			try {
-				let payloadData = JSON.parse(body).results.map((result) => recipeToResponse(result));
+				let payloadData = JSON.parse(body).results.map((result) => recipeToResponse(result, inventory));
 				let payload = {
 					data: payloadData,
 					page: req.query.page || 1
@@ -119,10 +119,28 @@ function getRecipes(req, res) {
 	});
 }
 
-function recipeToResponse(recipe) {
-	let unsatisfiedIngredients = recipe.missedIngredients.map((ingredient) => ingredient.name);
-	let satisfiedIngredients = recipe.usedIngredients.map((ingredient) => ingredient.name);
+Set.prototype.difference = function(setB) {
+    var difference = new Set(this);
+    for (var elem of setB) {
+        difference.delete(elem);
+    }
+    return difference;
+}
 
+function recipeToResponse(recipe, inventory) {
+	// missing and not missing ingredients
+	let allIngredients = new Set();
+	for (let step of recipe.analyzedInstructions[0].steps) {
+		for (let ingredient of step.ingredients) {
+			allIngredients.add(ingredient.name);
+		}
+	}
+	let satisfiedIngredients = Array.from(allIngredients)
+								.filter((ingredient) => inventory.some((item) => ingredient.indexOf(item) > -1 || item.indexOf(ingredient) > -1));
+	let unsatisfiedIngredients = allIngredients.difference(new Set(satisfiedIngredients));
+
+
+	// steps
 	let steps = recipe.analyzedInstructions.length > 0 ? recipe.analyzedInstructions[0].steps.map((s) => s.step): [];
 
 	// parse out embedded step numbers, example: 'Do this.2. Then do this' => 'Do this. Then do this'
