@@ -137,7 +137,7 @@ function recipeToResponse(recipe, inventory) {
 	}
 	let satisfiedIngredients = Array.from(allIngredients)
 								.filter((ingredient) => inventory.some((item) => ingredient.indexOf(item) > -1 || item.indexOf(ingredient) > -1));
-	let unsatisfiedIngredients = allIngredients.difference(new Set(satisfiedIngredients));
+	let unsatisfiedIngredients = Array.from(allIngredients.difference(new Set(satisfiedIngredients)));
 
 
 	// steps
