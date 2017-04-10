@@ -130,6 +130,17 @@ Set.prototype.difference = function(setB) {
 function recipeToResponse(recipe, inventory) {
 	// missing and not missing ingredients
 	let allIngredients = new Set();
+
+	let otherUnsat = recipe.missedIngredients.map((ingredient) => ingredient.name);
+	let otherSat = recipe.usedIngredients.map((ingredient) => ingredient.name);
+
+	for (let ingred of otherUnsat) {
+		allIngredients.add(ingred);
+	}
+	for (let ingred of otherSat) {
+		allIngredients.add(ingred);
+	}
+
 	for (let step of recipe.analyzedInstructions[0].steps) {
 		for (let ingredient of step.ingredients) {
 			allIngredients.add(ingredient.name);
